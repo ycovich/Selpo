@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>new product  &ndash; selmag</title>
+</head>
+<body>
+<a data-th-href="@{/catalog/products/list}">&larr; back to product list</a>
+<h1>new product</h1>
+<div data-th-if="${errors}">
+    <ul>
+        <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+    </ul>
+
+</div>
+<form method="post" data-th-action="@{/catalog/products/create}">
+    <label>
+        Title:<br>
+        <input type="text" name="title" data-th-value="${payload?.title()}">
+    </label><br>
+    <label>
+        Details:<br>
+        <textarea name="details" data-th-text="${payload?.details()}"></textarea>
+    </label><br>
+    <button type="submit">create</button>
+</form>
+
+</body>
+</html>

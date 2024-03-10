@@ -31,3 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
+/manager-app/src/main/resources/application.yaml

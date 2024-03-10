@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>edit product &ndash; selmag</title>
+</head>
+<body>
+<a data-th-href="@{/catalog/products/{productId}(productId=${product.id})}">&larr; back to product</a>
+<h1>edit product [[${product.title}]]</h1>
+<div data-th-if="${errors}">
+    <ul>
+        <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+    </ul>
+
+</div>
+<form method="post" data-th-action="@{/catalog/products/{productId}/edit(productId=${product.id})}">
+    <label>
+        Title:<br>
+        <input type="text" name="title" data-th-value="${payload != null ? payload.title : product.title}">
+    </label><br>
+    <label>
+        Details:<br>
+        <textarea name="details" data-th-text="${payload != null ? payload.details :  product.details}"></textarea>
+    </label><br>
+    <button type="submit">edit</button>
+</form>
+<form method="post" data-th-action="@{/catalog/products/{productId}/delete (productId = ${product.id})}">
+    <button type="submit">delete</button>
+</form>
+
+</body>
+</html>
