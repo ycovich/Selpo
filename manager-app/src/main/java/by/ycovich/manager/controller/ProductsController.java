@@ -1,25 +1,23 @@
 package by.ycovich.manager.controller;
 
+import by.ycovich.manager.client.BadRequestException;
+import by.ycovich.manager.client.ProductClient;
 import by.ycovich.manager.entity.Product;
 import by.ycovich.manager.controller.payload.NewProductPayload;
-import by.ycovich.manager.service.ProductService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/catalog/products")
 public class ProductsController {
-    private final ProductService productService;
+    private final ProductClient client;
 
     @GetMapping({"", "/", "/list"})
     public String getProductsList(Model model){
-        model.addAttribute("products", productService.findAllProducts());
+        model.addAttribute("products", client.findAllProducts());
         return "catalog/products/list";
     }
 
@@ -29,22 +27,15 @@ public class ProductsController {
     }
 
     @PostMapping("/create")
-    public String createProduct(@Valid NewProductPayload payload,
-                                BindingResult bindingResult,
+    public String createProduct(NewProductPayload payload,
                                 Model model){
-        if (bindingResult.hasErrors()){
-            model.addAttribute("payload", payload);
-            model.addAttribute("errors", bindingResult.getAllErrors().stream()
-                    .map(ObjectError::getDefaultMessage)
-                    .toList());
-            return "catalog/products/add";
-        } else {
-            Product product = productService.createProduct(payload.title(), payload.details());
-            return "redirect:/catalog/products/%d".formatted(product.getId());
-        }
+            try {
+                Product product = client.createProduct(payload.title(), payload.details());
+                return "redirect:/catalog/products/%d".formatted(product.id());
+            } catch (BadRequestException exception) {
+                model.addAttribute("payload", payload);
+                model.addAttribute("errors", exception.getErrors());
+                return "catalog/products/add";
+            }
     }
-
-
-
-
 }
