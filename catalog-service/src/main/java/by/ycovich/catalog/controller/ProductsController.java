@@ -5,17 +5,12 @@ import by.ycovich.catalog.entity.Product;
 import by.ycovich.catalog.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -25,8 +20,8 @@ public class ProductsController {
     private final ProductService productService;
 
     @GetMapping
-    public List<Product> findProducts(){
-        return productService.findAllProducts();
+    public Iterable<Product> findProducts(@RequestParam(name = "filter", required = false) String filter) {
+        return productService.findAllProducts(filter);
     }
 
     @PostMapping

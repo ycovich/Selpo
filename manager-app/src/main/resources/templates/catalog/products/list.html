@@ -5,8 +5,16 @@
     <title>product list &ndash; selmag</title>
 </head>
 <body>
-<a data-th-href="@{/catalog/products/create }">add new product</a>
+<a data-th-href="@{/catalog/products/create}">add new product</a>
 <h1>product list:</h1>
+<form method="get" data-th-action="@{/catalog/products/list}">
+    <label>filter:
+        <input type="text" name="filter" data-th-value="${filter}">
+        <button type="submit">search</button>
+    </label>
+
+
+</form>
 <table>
     <thead>
     <tr>

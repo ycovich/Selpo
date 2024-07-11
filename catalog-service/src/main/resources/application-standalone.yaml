@@ -1,3 +1,18 @@
 server:
   port: 8081
 
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/catalog_db
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+  flyway:
+    schemas:
+      - public
+      - catalog
+
+logging:
+  level:
+    sql: info

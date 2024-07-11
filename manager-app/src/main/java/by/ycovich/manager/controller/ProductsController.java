@@ -16,8 +16,9 @@ public class ProductsController {
     private final ProductClient client;
 
     @GetMapping({"", "/", "/list"})
-    public String getProductsList(Model model){
-        model.addAttribute("products", client.findAllProducts());
+    public String getProductsList(Model model, @RequestParam(name = "filter", required = false) String filter){
+        model.addAttribute("products", client.findAllProducts(filter));
+        model.addAttribute("filter", filter);
         return "catalog/products/list";
     }
 
